@@ -74,10 +74,15 @@ function moveNoButton(){
 function updateUI(){
   counter.textContent = `Intentos de NO: ${noTries}`;
   silly.textContent = `Estado: ${noPhrases[noTries % noPhrases.length]}`;
-  hint.textContent  = hintPhrases[noTries % hintPhrases.length];
+  hint.textContent = hintPhrases[noTries % hintPhrases.length];
 
   yesBtn.style.transform = `scale(${yesScale})`;
-  noBtn.style.transform  = `scale(${noScale})`;
+  noBtn.style.transform = `scale(${noScale})`;
+
+  // APARECER MENSAJE DE RESPETO
+  if (noTries >= 10) {
+    respectP.style.display = "block";
+  }
 }
 
 function trollNo(){
@@ -184,6 +189,8 @@ function draw(){
   animId = requestAnimationFrame(draw);
 }
 
+
+
 //Haremos el arreglo para que  el mensaje aparezca despues de 10 NOs
 const respectP = document.getElementById("respectP");
 noBtn.addEventListener("click", () => {
@@ -192,11 +199,11 @@ noBtn.addEventListener("click", () => {
   }
 });
 
-// Agrega esto al principio de tu script.js para resetear el estado
 document.addEventListener("DOMContentLoaded", () => {
     overlay.hidden = true;
     overlayNo.hidden = true;
-    respectP.style.display = "none";
+    resizeCanvas();
+    updateUI();
 });
 
 function startConfetti(){
