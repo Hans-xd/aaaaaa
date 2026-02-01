@@ -49,14 +49,10 @@ body {
 .s4 { bottom: 5%; right: 5%; opacity: .18; }
 
 /* Estilos de los girasoles CSS puros */
-.s2, .s3, .s4 {
-  background:
-    radial-gradient(circle at 50% 50%, rgba(122,74,42,.75) 0 18%, transparent 19%),
-    repeating-conic-gradient(from 0deg, rgba(255,207,74,.85) 0 10deg, rgba(255,183,3,.7) 10deg 20deg);
-  border-radius: 50%;
-  mask: radial-gradient(circle, transparent 0 30%, #000 31%), radial-gradient(circle, #000 0 100%);
-  -webkit-mask: radial-gradient(circle, transparent 0 30%, #000 31%), radial-gradient(circle, #000 0 100%);
-}
+.s2 { top: 10%; right: -30px; width: 220px; height: 220px; opacity: .22; }
+.s3 { bottom: -40px; left: 5%;  width: 240px; height: 240px; opacity: .18; }
+.s4 { bottom: 5%; right: 5%;   width: 140px; height: 140px; opacity: .14; }
+
 
 .floaty {
   position: absolute;
@@ -164,6 +160,14 @@ h1 {
 }
 
 .overlay[hidden] { display: none !important; }
+
+.respect.pop{
+  animation: pop .28s ease-out;
+}
+@keyframes pop{
+  from { transform: translateY(8px) scale(.98); opacity: 0; }
+  to   { transform: translateY(0)   scale(1);   opacity: 1; }
+}
 
 .modal {
   background: white;

@@ -11,12 +11,18 @@ const closeBtn  = document.getElementById("closeBtn");
 const backBtn   = document.getElementById("backBtn");
 const realNoBtn = document.getElementById("realNo");
 
+// ✅ declara esto arriba (antes de usarlo)
+const respectP = document.getElementById("respectP");
+
 const confettiCanvas = document.getElementById("confetti");
 const ctx = confettiCanvas.getContext("2d");
 
 let noTries = 0;
 let yesScale = 1;
 let noScale  = 1;
+
+// ✅ para animar SOLO la primera vez que aparece
+let respectShown = false;
 
 const noPhrases = [
   "¿Oye por qué le pones al NO? 😭",
@@ -55,7 +61,6 @@ function moveNoButton(){
   const r = arenaRect();
   const pad = 14;
 
-  // tamaño aprox del botón
   const bw = noBtn.offsetWidth;
   const bh = noBtn.offsetHeight;
 
@@ -65,7 +70,6 @@ function moveNoButton(){
   const x = Math.random() * clamp(maxX, 0, maxX) + pad/2;
   const y = Math.random() * clamp(maxY, 0, maxY) + pad/2;
 
-  // lo ponemos en modo "flotante" dentro del arena
   noBtn.style.position = "absolute";
   noBtn.style.left = `${x}px`;
   noBtn.style.top  = `${y}px`;
@@ -74,25 +78,29 @@ function moveNoButton(){
 function updateUI(){
   counter.textContent = `Intentos de NO: ${noTries}`;
   silly.textContent = `Estado: ${noPhrases[noTries % noPhrases.length]}`;
-  hint.textContent = hintPhrases[noTries % hintPhrases.length];
+  hint.textContent  = hintPhrases[noTries % hintPhrases.length];
 
   yesBtn.style.transform = `scale(${yesScale})`;
-  noBtn.style.transform = `scale(${noScale})`;
+  noBtn.style.transform  = `scale(${noScale})`;
 
-  // APARECER MENSAJE DE RESPETO
-  if (noTries >= 10) {
-    respectP.style.display = "block";
+  // ✅ Mostrar después de 10 NO (y sirve para hover/touch/click)
+  const shouldShow = noTries >= 10;
+  respectP.hidden = !shouldShow;
+
+  if (shouldShow && !respectShown) {
+    respectShown = true;
+    respectP.classList.add("pop");
+    // quita la clase después para que se pueda re-animar si quieres
+    setTimeout(() => respectP.classList.remove("pop"), 350);
   }
 }
 
 function trollNo(){
   noTries++;
 
-  // crece el SI, se achica el NO
   yesScale = clamp(1 + noTries * 0.08, 1, 2.1);
   noScale  = clamp(1 - noTries * 0.07, 0.35, 1);
 
-  // cambia texto del NO de forma graciosa
   if (noTries === 3) noBtn.textContent = "NO (pero… 😳)";
   if (noTries === 5) noBtn.textContent = "NO (ya me cansé)";
   if (noTries === 7) noBtn.textContent = "NO (soy mini)";
@@ -101,16 +109,19 @@ function trollNo(){
   moveNoButton();
   updateUI();
 
-  // vibración suave en mobile (si existe)
   if (navigator.vibrate) navigator.vibrate(40);
 }
 
+// ✅ hover PC
 noBtn.addEventListener("mouseenter", trollNo);
+
+// ✅ touch móvil (se arranca igual)
 noBtn.addEventListener("touchstart", (e) => {
   e.preventDefault();
   trollNo();
 }, { passive:false });
 
+// ✅ click (por si igual logran pillarlo)
 noBtn.addEventListener("click", (e) => {
   e.preventDefault();
   trollNo();
@@ -134,6 +145,9 @@ backBtn.addEventListener("click", () => {
   overlayNo.hidden = true;
 });
 
+// inicial
+overlay.hidden = true;
+overlayNo.hidden = true;
 updateUI();
 
 /* =========================
@@ -188,23 +202,6 @@ function draw(){
 
   animId = requestAnimationFrame(draw);
 }
-
-
-
-//Haremos el arreglo para que  el mensaje aparezca despues de 10 NOs
-const respectP = document.getElementById("respectP");
-noBtn.addEventListener("click", () => {
-  if (noTries >= 10) {
-    respectP.style.display = "block";
-  }
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-    overlay.hidden = true;
-    overlayNo.hidden = true;
-    resizeCanvas();
-    updateUI();
-});
 
 function startConfetti(){
   resizeCanvas();
