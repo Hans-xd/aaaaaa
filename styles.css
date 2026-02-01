@@ -227,6 +227,12 @@ h1{
   backdrop-filter: blur(8px);
   z-index: 50;
 }
+
+/* Agrega esto para que el atributo hidden funcione de verdad */
+.overlay[hidden] {
+  display: none !important;
+}
+
 .modal{
   width: min(560px, 92vw);
   background: rgba(255,255,255,.92);

@@ -184,6 +184,12 @@ function draw(){
   animId = requestAnimationFrame(draw);
 }
 
+// Agrega esto al principio de tu script.js para resetear el estado
+document.addEventListener("DOMContentLoaded", () => {
+    overlay.hidden = true;
+    overlayNo.hidden = true;
+});
+
 function startConfetti(){
   resizeCanvas();
   makePieces();
