@@ -13,7 +13,6 @@
 * { box-sizing: border-box; }
 html, body { 
   height: 100%; 
-  /* Evita el scroll horizontal molesto en móviles */
   overflow-x: hidden; 
 }
 
@@ -26,91 +25,140 @@ body {
               linear-gradient(135deg, #fff 0%, var(--pink) 100%);
 }
 
-/* --- Fondo decorativo adaptativo --- */
-.bg { position: fixed; inset: 0; pointer-events: none; z-index: -1; }
+/* --- DECORACIÓN GIRASOLES (RECUPERADA) --- */
+.bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
 
 .sun {
   position: absolute;
-  width: clamp(100px, 20vw, 180px); /* Tamaño fluido */
-  height: clamp(100px, 20vw, 180px);
+  width: clamp(120px, 25vw, 180px); /* Tamaño fluido */
+  height: clamp(120px, 25vw, 180px);
   opacity: .35;
+  filter: drop-shadow(0 10px 25px rgba(0,0,0,.08));
   animation: float 6s ease-in-out infinite;
 }
 
-/* Ocultar algunos girasoles en pantallas muy pequeñas para no saturar */
-@media (max-width: 480px) {
-  .s2, .s4 { display: none; }
+.sun svg { width: 100%; height: 100%; }
+.sun .petals ellipse { fill: var(--sun); }
+.sun .center { fill: var(--brown); }
+.sun .center2 { fill: #a56a3c; opacity: .75; }
+.sun .spark { fill: #f7e7d8; opacity: .6; }
+
+.s1 { top: -20px; left: -20px; transform: rotate(-10deg); }
+.s2 { top: 10%; right: -30px; opacity: .25; }
+.s3 { bottom: -40px; left: 5%; opacity: .22; }
+.s4 { bottom: 5%; right: 5%; opacity: .18; }
+
+/* Estilos de los girasoles CSS puros */
+.s2, .s3, .s4 {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(122,74,42,.75) 0 18%, transparent 19%),
+    repeating-conic-gradient(from 0deg, rgba(255,207,74,.85) 0 10deg, rgba(255,183,3,.7) 10deg 20deg);
+  border-radius: 50%;
+  mask: radial-gradient(circle, transparent 0 30%, #000 31%), radial-gradient(circle, #000 0 100%);
+  -webkit-mask: radial-gradient(circle, transparent 0 30%, #000 31%), radial-gradient(circle, #000 0 100%);
 }
 
-/* --- Contenedor Principal --- */
+.floaty {
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(circle at 10% 20%, rgba(255,134,182,.20) 0 2px, transparent 3px),
+    radial-gradient(circle at 40% 80%, rgba(255,207,74,.18) 0 2px, transparent 3px);
+  animation: drift 18s linear infinite;
+}
+
+/* --- CONTENEDOR Y TARJETA --- */
 .wrap {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 15px; /* Menos padding en móvil */
+  padding: 20px;
+  position: relative;
+  z-index: 1;
 }
 
 .card {
   width: 100%;
-  max-width: 650px;
+  max-width: 680px;
   background: var(--card);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 134, 182, .35);
   border-radius: 26px;
-  padding: clamp(20px, 5vw, 40px);
+  padding: clamp(20px, 5vw, 35px);
   box-shadow: var(--shadow);
-  text-align: center; /* Centrar textos para mejor estética */
 }
 
-/* --- Tipografía Fluida --- */
 h1 {
+  font-size: clamp(24px, 7vw, 40px);
   margin: 10px 0;
-  font-size: clamp(1.5rem, 6vw, 2.5rem);
-  line-height: 1.2;
 }
 
-.desc {
-  font-size: clamp(1rem, 4vw, 1.15rem);
-  margin-bottom: 20px;
+.badge {
+  display: inline-block;
+  padding: 6px 14px;
+  background: rgba(255,134,182,.15);
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 10px;
 }
 
-/* --- Área de Juego (Arena) --- */
 .arena {
   position: relative;
-  height: 250px; /* Un poco más alta para que el botón tenga espacio de huir */
+  height: 200px;
+  background: rgba(255, 214, 234, .3);
+  border: 1.5px dashed var(--rose);
   border-radius: 20px;
-  background: rgba(255, 214, 234, .35);
-  border: 1px dashed var(--rose);
   margin: 20px 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 20px;
-  overflow: hidden; /* Importante para que el botón no se salga del borde */
+  gap: 15px;
+  overflow: hidden;
+  touch-action: none; /* Evita scroll al perseguir el botón */
 }
 
-/* --- Botones --- */
+/* --- BOTONES --- */
 .btn {
-  padding: 15px 25px;
-  font-size: 1.1rem;
-  border-radius: 15px;
+  padding: 14px 22px;
+  font-family: inherit;
+  font-weight: 800;
+  border-radius: 16px;
   border: none;
   cursor: pointer;
-  font-weight: 700;
-  transition: all 0.2s;
-  touch-action: manipulation; /* Optimiza clicks en móvil */
+  box-shadow: 0 8px 20px rgba(0,0,0,.1);
+  transition: transform 0.15s;
 }
 
-/* --- Modales / Overlays --- */
+.yes {
+  background: linear-gradient(135deg, #fff, var(--pink));
+  border: 2px solid var(--rose);
+}
+
+.no {
+  background: linear-gradient(135deg, #fff, #ffe9b0);
+  border: 2px solid var(--brown);
+  z-index: 10;
+}
+
+.btn.solid {
+  background: linear-gradient(135deg, #ff4f9a, #ff86b6);
+  color: white;
+  width: 100%;
+  margin-top: 15px;
+}
+
+/* --- OVERLAYS --- */
 .overlay {
   position: fixed;
   inset: 0;
   display: grid;
   place-items: center;
-  background: rgba(255, 214, 234, .7);
+  background: rgba(255, 214, 234, .6);
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   z-index: 100;
   padding: 20px;
 }
@@ -118,25 +166,27 @@ h1 {
 .overlay[hidden] { display: none !important; }
 
 .modal {
-  width: 100%;
-  max-width: 500px;
   background: white;
-  padding: 30px;
-  border-radius: 30px;
+  padding: clamp(20px, 5vw, 30px);
+  border-radius: 25px;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
   box-shadow: var(--shadow);
 }
 
-/* --- Ajustes para Tablets y Laptops pequeñas --- */
-@media (max-width: 768px) {
-  .chips {
-    flex-direction: column; /* Chips uno sobre otro en móvil */
-    align-items: center;
-  }
-  .chip { width: 80%; }
+/* --- ANIMACIONES --- */
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(15px) rotate(3deg); }
+}
+@keyframes drift {
+  from { transform: translate(0,0); }
+  to { transform: translate(40px, 40px); }
 }
 
-/* --- Animaciones --- */
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-15px); }
+/* --- MEDIA QUERY TABLETS --- */
+@media (max-width: 768px) {
+  .arena { height: 250px; }
+  .modal { width: 95%; }
 }
