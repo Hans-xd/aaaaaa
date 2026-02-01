@@ -4,6 +4,8 @@ const noBtn   = document.getElementById("noBtn");
 const hint    = document.getElementById("hint");
 const counter = document.getElementById("counter");
 const silly   = document.getElementById("silly");
+const miniBox = document.getElementById("miniBox");
+
 
 const overlay   = document.getElementById("overlay");
 const overlayNo = document.getElementById("overlayNo");
@@ -76,6 +78,9 @@ function moveNoButton(){
 }
 
 function updateUI(){
+  // ✅ Mostrar el estado solo después del primer NO
+  miniBox.hidden = (noTries < 1);
+
   counter.textContent = `Intentos de NO: ${noTries}`;
   silly.textContent = `Estado: ${noPhrases[noTries % noPhrases.length]}`;
   hint.textContent  = hintPhrases[noTries % hintPhrases.length];
@@ -83,17 +88,16 @@ function updateUI(){
   yesBtn.style.transform = `scale(${yesScale})`;
   noBtn.style.transform  = `scale(${noScale})`;
 
-  // ✅ Mostrar después de 10 NO (y sirve para hover/touch/click)
   const shouldShow = noTries >= 10;
   respectP.hidden = !shouldShow;
 
   if (shouldShow && !respectShown) {
     respectShown = true;
     respectP.classList.add("pop");
-    // quita la clase después para que se pueda re-animar si quieres
     setTimeout(() => respectP.classList.remove("pop"), 350);
   }
 }
+
 
 function trollNo(){
   noTries++;
