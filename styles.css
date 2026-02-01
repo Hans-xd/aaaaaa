@@ -1,278 +1,142 @@
-:root{
+:root {
   --pink: #ffd6ea;
-  --pink2:#ffe8f3;
-  --rose:#ff86b6;
-  --brown:#7a4a2a;
-  --sun:#ffcf4a;
-  --sun2:#ffb703;
-  --card:#ffffffcc;
-  --text:#2b1b22;
+  --pink2: #ffe8f3;
+  --rose: #ff86b6;
+  --brown: #7a4a2a;
+  --sun: #ffcf4a;
+  --sun2: #ffb703;
+  --card: #ffffffcc;
+  --text: #2b1b22;
   --shadow: 0 18px 50px rgba(30, 10, 20, .18);
 }
 
-*{ box-sizing:border-box; }
-html,body{ height:100%; }
-body{
-  margin:0;
-  font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  color:var(--text);
+* { box-sizing: border-box; }
+html, body { 
+  height: 100%; 
+  /* Evita el scroll horizontal molesto en móviles */
+  overflow-x: hidden; 
+}
+
+body {
+  margin: 0;
+  font-family: "Fredoka", system-ui, -apple-system, sans-serif;
+  color: var(--text);
   background: radial-gradient(1200px 700px at 20% 20%, var(--pink2), transparent 60%),
               radial-gradient(1000px 650px at 80% 30%, #fff1f8, transparent 55%),
               linear-gradient(135deg, #fff 0%, var(--pink) 100%);
-  overflow-x:hidden;
 }
 
-.bg{ position:fixed; inset:0; pointer-events:none; }
+/* --- Fondo decorativo adaptativo --- */
+.bg { position: fixed; inset: 0; pointer-events: none; z-index: -1; }
 
-.sun{
-  position:absolute;
-  width:180px;
-  height:180px;
-  opacity:.35;
-  filter: drop-shadow(0 10px 25px rgba(0,0,0,.08));
+.sun {
+  position: absolute;
+  width: clamp(100px, 20vw, 180px); /* Tamaño fluido */
+  height: clamp(100px, 20vw, 180px);
+  opacity: .35;
   animation: float 6s ease-in-out infinite;
 }
-.sun svg{ width:100%; height:100%; }
-.sun .petals ellipse{ fill:var(--sun); }
-.sun .center{ fill:var(--brown); }
-.sun .center2{ fill:#a56a3c; opacity:.75; }
-.sun .spark{ fill:#f7e7d8; opacity:.6; }
 
-.s1{ top:-30px; left:-30px; transform: rotate(-10deg); }
-.s2{ top:10%; right:-50px; width:220px; height:220px; opacity:.25; }
-.s3{ bottom:-60px; left:8%; width:240px; height:240px; opacity:.22; }
-.s4{ bottom:8%; right:6%; width:140px; height:140px; opacity:.18; }
-
-.s2, .s3, .s4{
-  background:
-    radial-gradient(circle at 50% 50%, rgba(122,74,42,.75) 0 18%, transparent 19%),
-    repeating-conic-gradient(from 0deg, rgba(255,207,74,.85) 0 10deg, rgba(255,183,3,.7) 10deg 20deg);
-  border-radius:50%;
-  mask: radial-gradient(circle, transparent 0 30%, #000 31%),
-        radial-gradient(circle, #000 0 100%);
-  -webkit-mask: radial-gradient(circle, transparent 0 30%, #000 31%),
-                radial-gradient(circle, #000 0 100%);
-  animation: float 7.2s ease-in-out infinite;
+/* Ocultar algunos girasoles en pantallas muy pequeñas para no saturar */
+@media (max-width: 480px) {
+  .s2, .s4 { display: none; }
 }
 
-.floaty{
-  position:absolute;
-  inset:-20%;
-  background:
-    radial-gradient(circle at 10% 20%, rgba(255,134,182,.20) 0 2px, transparent 3px),
-    radial-gradient(circle at 40% 80%, rgba(255,207,74,.18) 0 2px, transparent 3px),
-    radial-gradient(circle at 70% 30%, rgba(122,74,42,.10) 0 2px, transparent 3px),
-    radial-gradient(circle at 90% 60%, rgba(255,134,182,.18) 0 2px, transparent 3px);
-  animation: drift 18s linear infinite;
+/* --- Contenedor Principal --- */
+.wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px; /* Menos padding en móvil */
 }
 
-@keyframes float{
-  0%,100%{ transform: translateY(0) rotate(0deg); }
-  50%{ transform: translateY(14px) rotate(3deg); }
-}
-@keyframes drift{
-  0%{ transform: translate(0,0); }
-  100%{ transform: translate(60px, 40px); }
-}
-
-.wrap{
-  min-height:100%;
-  display:grid;
-  place-items:center;
-  padding:24px;
-}
-
-.card{
-  width:min(720px, 92vw);
+.card {
+  width: 100%;
+  max-width: 650px;
   background: var(--card);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 134, 182, .35);
   border-radius: 26px;
-  padding: 26px 22px;
+  padding: clamp(20px, 5vw, 40px);
   box-shadow: var(--shadow);
-  position:relative;
-  overflow:hidden;
+  text-align: center; /* Centrar textos para mejor estética */
 }
 
-.badge{
-  display:inline-block;
-  padding:8px 12px;
-  border-radius:999px;
-  background: rgba(255,134,182,.18);
-  border:1px solid rgba(255,134,182,.35);
-  margin:0 0 12px;
-  font-weight:700;
+/* --- Tipografía Fluida --- */
+h1 {
+  margin: 10px 0;
+  font-size: clamp(1.5rem, 6vw, 2.5rem);
+  line-height: 1.2;
 }
 
-h1{
-  margin:6px 0 8px;
-  font-size: clamp(26px, 3.5vw, 40px);
-  line-height:1.05;
-}
-.name{
-  color: #ff4f9a;
-  text-shadow: 0 6px 20px rgba(255,79,154,.25);
-}
-.sub{
-  display:block;
-  margin-top:8px;
-  font-size: clamp(14px, 2.2vw, 18px);
-  opacity:.75;
+.desc {
+  font-size: clamp(1rem, 4vw, 1.15rem);
+  margin-bottom: 20px;
 }
 
-.desc{
-  margin: 12px 0 18px;
-  font-size: 18px;
-  line-height: 1.45;
-}
-.desc .tiny{ opacity:.75; }
-
-.question{
-  background: rgba(255,255,255,.6);
-  border: 1px dashed rgba(122,74,42,.25);
-  border-radius: 18px;
-  padding: 14px 14px;
-  margin: 10px 0 14px;
-}
-.qTitle{
-  font-size: 22px;
-  font-weight: 800;
-}
-.qHint{
-  opacity:.8;
-  margin-top:6px;
-}
-
-.arena{
-  position:relative;
-  height: 170px;
+/* --- Área de Juego (Arena) --- */
+.arena {
+  position: relative;
+  height: 250px; /* Un poco más alta para que el botón tenga espacio de huir */
   border-radius: 20px;
   background: rgba(255, 214, 234, .35);
-  border: 1px solid rgba(255,134,182,.25);
-  overflow:hidden;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap: 18px;
-  padding: 14px;
+  border: 1px dashed var(--rose);
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  overflow: hidden; /* Importante para que el botón no se salga del borde */
 }
 
-.btn{
-  border:0;
-  cursor:pointer;
-  font-family: inherit;
-  font-weight: 800;
-  letter-spacing:.2px;
-  border-radius: 18px;
-  padding: 14px 18px;
-  box-shadow: 0 10px 26px rgba(0,0,0,.12);
-  transform: translateZ(0);
-  transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
-  user-select:none;
+/* --- Botones --- */
+.btn {
+  padding: 15px 25px;
+  font-size: 1.1rem;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.2s;
+  touch-action: manipulation; /* Optimiza clicks en móvil */
 }
 
-.btn:active{ transform: scale(.98); }
-
-.yes{
-  background: linear-gradient(135deg, #fff 0%, #ffeef6 55%, #ffd6ea 100%);
-  border: 2px solid rgba(255,79,154,.35);
-}
-.no{
-  background: linear-gradient(135deg, #fff 0%, #fff7d6 50%, #ffe9b0 100%);
-  border: 2px solid rgba(122,74,42,.18);
-}
-
-.btn:hover{
-  filter: brightness(1.03);
-  box-shadow: 0 14px 34px rgba(0,0,0,.14);
-}
-
-.btn.solid{
-  background: linear-gradient(135deg, #ff4f9a 0%, #ff86b6 100%);
-  color:white;
-  border: 2px solid rgba(255,255,255,.35);
-}
-
-.mini{
-  margin-top: 12px;
-  opacity:.85;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  flex-wrap:wrap;
-}
-.dot{ opacity:.45; }
-
-.respect{
-  margin: 14px 0 0;
-  font-size: 14px;
-  opacity:.8;
-}
-.linky{
-  background:none;
-  border:0;
-  color:#ff4f9a;
-  font-weight:800;
-  cursor:pointer;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.overlay{
-  position:fixed;
-  inset:0;
-  display:grid;
-  place-items:center;
-  background: rgba(255, 214, 234, .55);
+/* --- Modales / Overlays --- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 214, 234, .7);
   backdrop-filter: blur(8px);
-  z-index: 50;
+  z-index: 100;
+  padding: 20px;
 }
 
-/* Agrega esto para que el atributo hidden funcione de verdad */
-.overlay[hidden] {
-  display: none !important;
-}
+.overlay[hidden] { display: none !important; }
 
-.modal{
-  width: min(560px, 92vw);
-  background: rgba(255,255,255,.92);
-  border: 1px solid rgba(255,79,154,.25);
-  border-radius: 26px;
-  padding: 22px;
+.modal {
+  width: 100%;
+  max-width: 500px;
+  background: white;
+  padding: 30px;
+  border-radius: 30px;
   box-shadow: var(--shadow);
-  position:relative;
-  z-index: 2;
-  text-align:center;
 }
-.big{
-  font-size: 34px;
-  font-weight: 900;
-}
-.modalText{
-  font-size: 18px;
-  line-height:1.45;
-  margin: 10px 0 14px;
-}
-.chips{
-  display:flex;
-  gap:10px;
-  justify-content:center;
-  flex-wrap:wrap;
-  margin: 8px 0 10px;
-}
-.chip{
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: rgba(255,134,182,.16);
-  border: 1px solid rgba(255,134,182,.28);
-  font-weight:800;
-}
-.modalSmall{ opacity:.8; margin: 10px 0 14px; }
 
-#confetti{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  z-index:1;
+/* --- Ajustes para Tablets y Laptops pequeñas --- */
+@media (max-width: 768px) {
+  .chips {
+    flex-direction: column; /* Chips uno sobre otro en móvil */
+    align-items: center;
+  }
+  .chip { width: 80%; }
+}
+
+/* --- Animaciones --- */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
 }

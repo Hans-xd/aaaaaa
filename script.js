@@ -19,7 +19,7 @@ let yesScale = 1;
 let noScale  = 1;
 
 const noPhrases = [
-  "¿Oye por qué le pegai al NO? 😭",
+  "¿Oye por qué le pones al NO? 😭",
   "El botón NO se puso nervioso…",
   "NO.exe dejó de responder",
   "Eso fue un accidente… ¿cierto? 👀",
@@ -33,9 +33,9 @@ const noPhrases = [
 
 const hintPhrases = [
   "Pista: el ‘NO’ se arranca.",
-  "Pista: el ‘SÍ’ es el camino del girasol.",
+  "Pista: el ‘SÍ’ es el camino de ti junto a mí.",
   "Pista: si apretas NO, se pone chiquitito.",
-  "Pista: te juro que esto es científico 🌻"
+  "Pista: te juro que esto será hermoso 🌻"
 ];
 
 function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
@@ -184,10 +184,19 @@ function draw(){
   animId = requestAnimationFrame(draw);
 }
 
+//Haremos el arreglo para que  el mensaje aparezca despues de 10 NOs
+const respectP = document.getElementById("respectP");
+noBtn.addEventListener("click", () => {
+  if (noTries >= 10) {
+    respectP.style.display = "block";
+  }
+});
+
 // Agrega esto al principio de tu script.js para resetear el estado
 document.addEventListener("DOMContentLoaded", () => {
     overlay.hidden = true;
     overlayNo.hidden = true;
+    respectP.style.display = "none";
 });
 
 function startConfetti(){
